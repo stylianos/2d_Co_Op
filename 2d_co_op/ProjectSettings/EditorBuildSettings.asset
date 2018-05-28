@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Multiplayer_Test.unity
     guid: 20fe90ce2e4f7d14cbd7d6b4de158c5f
+  - enabled: 1
+    path: Assets/Scenes/NetWorkDiscovery.unity
+    guid: 5714ebf0ff8ffb7478420a9f07144c1c
   m_configObjects: {}

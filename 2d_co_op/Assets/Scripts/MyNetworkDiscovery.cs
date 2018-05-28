@@ -9,40 +9,56 @@ public class MyNetworkDiscovery : NetworkDiscovery
     int minPort = 10000;
     int maxPort = 10010;
     int defaultPort = 10000;
+    bool initialised = false; 
 
 
-    // Update is called once per frame
-    void Update() {
 
+    public void InitialiseBroadcast()
+    {
+        initialised = Initialize();
+
+        if ( initialised)
+        {
+            this.GetComponent<MyNetworkDiscoveryUI>().setText("Initialised succesfully");
+        }
     }
 
     public void startClient()
     {
-        Initialize();
-        StartAsClient();
+        if (isServer)
+        {
+            StopBroadcast();
+        }
+        if ( isClient)
+        {
+            return;
+        }
+        
+        bool start_listening = StartAsClient();
+        if (start_listening && initialised )
+        {
+            this.GetComponent<MyNetworkDiscoveryUI>().setText("Client started succesfully");
+        }
+        
     }
 
     public void startServer()
     {
-        int serverPort = createServer();
 
-        if (serverPort != - 1)
+        bool server_started = StartAsServer();
+        if (server_started && initialised)
         {
-            Debug.Log("Server made on port : " + serverPort);
-            this.GetComponent<MyNetworkDiscoveryUI>().setText("Server made on port : " + serverPort);
-            broadcastData = serverPort.ToString();
-            Initialize();
-            StartAsServer();
+            this.GetComponent<MyNetworkDiscoveryUI>().setText("Server started succesfully"); 
+            Debug.Log("Server made on port : ");
         }
-        else
-        {
-            Debug.Log("Failed to create Server");
-        }
+
+       
     }
 
     public override void OnReceivedBroadcast(string fromAddress, string data)
 
     {
+        base.OnReceivedBroadcast(fromAddress, data);
         Debug.Log("Server found the data send is " + data);
         this.GetComponent<MyNetworkDiscoveryUI>().setText("Server found the data send is " + data);
     }
